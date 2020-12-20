@@ -4,13 +4,15 @@ import setuptools
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
-
+# maybe we could install blender directly in setup.py
+# https://stackoverflow.com/questions/20288711/post-install-script-with-python-setuptools
 setuptools.setup(
     name="two4two-laserschwelle",
     version="0.0.1",
     author="Philipp Weiss",
     author_email="philipp@itp.tu-berlin.de",
     description="Generate biased image data to train and test classifiers.",
+    # I would recommend MIT
     license='GPLv2+',
     long_description=long_description,
     long_description_content_type="text/markdown",

@@ -11,6 +11,7 @@ if blend_dir not in sys.path:
 from two4two.parameters import Parameters
 from two4two.data_generator import DataGenerator
 
+# should we make this file private _render_samples.py as you should not use it directly?
 def render(param_file, save_location, save_param_file):
     save_json = os.path.join(save_location, save_param_file)
     with open(save_json, mode='x') as fsave:
@@ -24,7 +25,7 @@ def render(param_file, save_location, save_param_file):
                     img_id = uuid.uuid1(np.random.randint(int(1e14)))
                     basename = "{}.png".format(img_id)
                     parameters.filename = basename
-                
+
                 parameters.save_parameters(fsave)
 
                 scene = DataGenerator(parameters)

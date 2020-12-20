@@ -17,9 +17,12 @@ Create a python3 environment and install the requirements.
 
 `pip install -r requirements.txt`
 
+# Find a better way then manual chaning code
 Open `two4two/blender.py` and change `self.package_directory` to the path where you cloned this directory.
 
-`make`
+```
+$ make
+```
 
 If this worked, you should be good.
 If not, here are some more details for the installation.
@@ -112,5 +115,6 @@ Thanks to [Martin Schuessler](http://mschuessler.de/) for guidance and support.
 I was working as a student assistent with him and developed this tool for his research.
 Also thanks to [Leon Sixt](https://userpage.fu-berlin.de/leonsixt/) for help with some parts of the code and especially for the arm-shift idea.
 And finally thanks to the rest of [Research Group 20](https://www.weizenbaum-institut.de/index.php?id=95&L=5) of the Weizenbaum Insitute for giving me the opportunity use my time to develop this and make it public.
+
 ### Funding
 Funded by the GermanFederal Ministry of Education and Research(BMBF) - NR 16DII113.

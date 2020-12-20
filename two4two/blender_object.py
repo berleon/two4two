@@ -3,8 +3,11 @@ import numpy as np
 import two4two.butils
 from mathutils import Vector
 
-class BlenderObject():
 
+class BlenderObject():
+    """
+    Have a short documentation:  What is it?
+    """
     def create_model(self):
         bpy.ops.mesh.primitive_cube_add(size=self.cube_size,
                                         enter_editmode=True,
@@ -31,7 +34,7 @@ class BlenderObject():
             arm_pos = 2.5
         else:
             raise "Arms must be either 'sticky' or 'stretchy'."
-            
+
         bpy.ops.mesh.primitive_cube_add(size=self.cube_size,
                                         enter_editmode=False,
                                         location=(0,arm_pos  + self.arm_shift,-1))
@@ -81,7 +84,7 @@ class BlenderObject():
 
         bpy.context.active_bone.select_tail = False
         bpy.context.active_bone.select_head = True
-        
+
         bpy.ops.armature.extrude_move(ARMATURE_OT_extrude={"forked":False},
                                       TRANSFORM_OT_translate={"value":(0, 0.5+self.arm_shift, -1)})
 
@@ -204,10 +207,10 @@ class BlenderObject():
                  right,
                  spherical=0,
                  arm_shift=None):
-        
+
         # Object Type. 'Sticky' or 'Stretchy'
         self.right = right
-        
+
         if arm_shift is None:
             self.arm_shift, _ = two4two.butils.get_random_arm_shift()
         else:

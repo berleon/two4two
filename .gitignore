@@ -1,1 +1,8 @@
 *.ipynb_checkpoints*
+*.egg-info
+blender/
+build/
+dist/
+get-pip.py
+blender.tar.xz
+*__pycache__*

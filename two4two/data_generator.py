@@ -7,6 +7,12 @@ import two4two.butils
 
 from two4two.blender_object import BlenderObject
 
+# In bias.py, I refactored the generation of the different paraemters.
+# I think the class design could be improved. Especially how biases are introdcued.
+# But it would allow to easily resmample only one parameter.
+#
+# https://gist.github.com/berleon/6fc86422737a51915310f35905f3a628
+#
 class DataGenerator():
 
     def random_pose(self, bend_range, rotation_range):
@@ -159,7 +165,7 @@ class DataGenerator():
         self.obj = BlenderObject(parameters.obj_name,
                                  parameters.spherical,
                                  parameters.arm_shift)
-        
+
         self.obj.add_material(parameters.obj_color)
 
         blend_dir = os.path.dirname(bpy.data.filepath)
@@ -174,7 +180,7 @@ class DataGenerator():
         x,y = parameters.position
         self.set_position(x,y)
         self.scene(parameters.back_color)
-        
+
         res_x, res_y = parameters.resolution
         bpy.context.scene.render.engine = 'CYCLES'
         bpy.context.scene.cycles.device = 'GPU'

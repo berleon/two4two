@@ -4,10 +4,12 @@ from two4two.color_generator import ColorGenerator
 from scipy.stats import truncnorm
 
 class Parameters():
-    
+
     def get_truncated_normal(self, mean=0, sd=1, low=0, upp=10):
         return truncnorm((low - mean) / sd, (upp - mean) / sd, loc=mean, scale=sd)
-       
+
+    # see comment in data_generator.py.
+    # https://gist.github.com/berleon/6fc86422737a51915310f35905f3a628
     def generate_parameters(self,
                             obj_name,
                             spherical=None,
@@ -16,10 +18,9 @@ class Parameters():
                             random_flip=False,
                             obj_incline=0.1,
                             obj_rotation=0.7):
-        
         self.obj_name = obj_name
-        
-        if spherical is None: 
+
+        if spherical is None:
             self.spherical = np.random.beta(0.3, 0.3)
         else:
             self.spherical = spherical
@@ -56,16 +57,16 @@ class Parameters():
 
         back_color = np.random.uniform(0.05, 0.80)
         self.back_color = ColorGenerator('binary').get_color(back_color)
-        
-    
+
+
     def save_parameters(self, file_handle):
         params = self.__dict__
         file_handle.writelines(json.dumps(params) + '\n')
-        
+
     def generate_many(self, n, save_location, object_types, structure_types):
-        
+
         n = int(n)
-        
+
         if object_types == 'sticky':
             obj_type = np.full(n, object_types)
         elif object_types == 'stretchy':
@@ -76,7 +77,7 @@ class Parameters():
             obj_type[np.where(mask)] = 'sticky'
         else:
             raise Exception(object_types)
-        
+
         if structure_types == 'cubes_and_spheres':
             structure = np.random.randint(2, size=n)
         elif structure_types == 'cubes':
@@ -87,18 +88,18 @@ class Parameters():
             structure = np.random.uniform(size=n)
         else:
             raise Exception(structure_types)
-            
+
         with open(save_location, mode='x') as f:
             for i in range(n):
                 self.generate_parameters(obj_type[i],
                                          structure[i])
                 self.save_parameters(f)
-   
+
     def __init__(self, obj_name=None):
-        
+
         self.filename = None
         self.resolution = [128, 128]
-       
+
         if obj_name is not None:
             self.generate_parameters(obj_name)
         else:
