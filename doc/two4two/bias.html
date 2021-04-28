@@ -261,6 +261,9 @@
                         <li>
                                 <a class="function" href="#MedVarSpherColorSampler.sample_spherical">sample_spherical</a>
                         </li>
+                        <li>
+                                <a class="function" href="#MedVarSpherColorSampler.sample">sample</a>
+                        </li>
                 </ul>
 
             </li>
@@ -694,6 +697,7 @@
 <span class="nd">@dataclasses</span><span class="o">.</span><span class="n">dataclass</span><span class="p">()</span>
 <span class="k">class</span> <span class="nc">MedVarSampler</span><span class="p">(</span><span class="n">Sampler</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A sampler producing slightly more challenging images with an asthetically pleasing colormap.</span>
+
 <span class="sd">    This sampler allows for a slightly higher variation in rotations and bending. Hence it creates a</span>
 <span class="sd">    more challenging datset. Hence any bias added to this dataset is more likely to be used.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -716,6 +720,7 @@
 <span class="nd">@dataclasses</span><span class="o">.</span><span class="n">dataclass</span><span class="p">()</span>
 <span class="k">class</span> <span class="nc">MedVarSpherSampler</span><span class="p">(</span><span class="n">MedVarSampler</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A sampler based on MedVar but with a Spherical bias.</span>
+
 <span class="sd">    more documentation needed ...</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -738,6 +743,7 @@
 <span class="nd">@dataclasses</span><span class="o">.</span><span class="n">dataclass</span><span class="p">()</span>
 <span class="k">class</span> <span class="nc">MedVarColorSampler</span><span class="p">(</span><span class="n">MedVarSampler</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A sampler based on MedVar but with a Color bias.</span>
+
 <span class="sd">    more documentation needed ...</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -751,6 +757,7 @@
 
     <span class="k">def</span> <span class="nf">sample_obj_color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">SceneParameters</span><span class="p">,</span> <span class="n">intervention</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Samples the ``obj_color`` and ``obj_color_rgba``.</span>
+
 <span class="sd">        Attrs:</span>
 <span class="sd">            params: SceneParameters for which the obj_color is sampled and updated in place.</span>
 <span class="sd">            intervention: Flag whether interventional sampling is applied. Details: see class docu.</span>
@@ -766,11 +773,13 @@
 <span class="nd">@dataclasses</span><span class="o">.</span><span class="n">dataclass</span><span class="p">()</span>
 <span class="k">class</span> <span class="nc">MedVarSpherColorSampler</span><span class="p">(</span><span class="n">MedVarColorSampler</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A sampler based on MedVar but with a Spherical and a color bias.</span>
+
 <span class="sd">    more documentation needed ...</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">sample_spherical</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">SceneParameters</span><span class="p">,</span> <span class="n">intervention</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Samples the ``spherical``..</span>
+
 <span class="sd">        Attrs:</span>
 <span class="sd">            params: SceneParameters for which the spherical attribute is sampled and updated.</span>
 <span class="sd">            intervention: Flag whether interventional sampling is applied. Details: see class docu.</span>
@@ -783,6 +792,40 @@
         <span class="k">while</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">arm_position</span> <span class="o">&gt;</span> <span class="mf">0.55</span> <span class="ow">and</span> <span class="n">params</span><span class="o">.</span><span class="n">spherical</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">):</span>
             <span class="n">params</span><span class="o">.</span><span class="n">spherical</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sample</span><span class="p">(</span><span class="n">obj_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spherical</span><span class="p">)</span>
         <span class="n">params</span><span class="o">.</span><span class="n">mark_sampled</span><span class="p">(</span><span class="s1">&#39;spherical&#39;</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SceneParameters</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns a new SceneParameters with random values.</span>
+
+<span class="sd">        If you create your own biased sampled dataset by inheriting from this class,</span>
+<span class="sd">        you might want to change the order of how attributes are set.</span>
+<span class="sd">        For example, if you want that ``obj_rotation_pitch`` should depend on the</span>
+<span class="sd">        ``arm_position``then you should also sample the ``arm_position`` first.</span>
+<span class="sd">        However, it is highly recommended to sample the object name first, as</span>
+<span class="sd">        the sampling of the attribute might be dependent on the label</span>
+<span class="sd">        (see the explanation of distributions in class description)</span>
+
+<span class="sd">        Attrs:</span>
+<span class="sd">            obj_name: Overides the sampled obj_name with the given namen. Usally only useful for</span>
+<span class="sd">                manual sampling. Not recommeded when samplign larger sets.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="n">SceneParameters</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sample_obj_name</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="c1"># The name flag allows to overide the sampling result. The sampling is still executed to</span>
+        <span class="c1"># trigger any custom functionality that might be implented in subclasses.</span>
+        <span class="k">if</span> <span class="n">obj_name</span> <span class="ow">and</span> <span class="n">params</span><span class="o">.</span><span class="n">obj_name</span> <span class="o">!=</span> <span class="n">obj_name</span><span class="p">:</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">obj_name</span> <span class="o">=</span> <span class="n">obj_name</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sample_labeling_error</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sample_bending</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sample_rotation</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sample_fliplr</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sample_position</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sample_arm_position</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sample_spherical</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sample_color</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="n">params</span><span class="o">.</span><span class="n">check_values</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">params</span>
 </pre></div>
 
         </details>
@@ -2442,6 +2485,7 @@ challenging datset. This dataset is more challenging. So the bias is more likely
             <summary>View Source</summary>
             <div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">MedVarSampler</span><span class="p">(</span><span class="n">Sampler</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A sampler producing slightly more challenging images with an asthetically pleasing colormap.</span>
+
 <span class="sd">    This sampler allows for a slightly higher variation in rotations and bending. Hence it creates a</span>
 <span class="sd">    more challenging datset. Hence any bias added to this dataset is more likely to be used.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -2463,8 +2507,9 @@ challenging datset. This dataset is more challenging. So the bias is more likely
 
         </details>
 
-            <div class="docstring"><p>A sampler producing slightly more challenging images with an asthetically pleasing colormap.
-This sampler allows for a slightly higher variation in rotations and bending. Hence it creates a
+            <div class="docstring"><p>A sampler producing slightly more challenging images with an asthetically pleasing colormap.</p>
+
+<p>This sampler allows for a slightly higher variation in rotations and bending. Hence it creates a
 more challenging datset. Hence any bias added to this dataset is more likely to be used.</p>
 </div>
 
@@ -2622,6 +2667,7 @@ more challenging datset. Hence any bias added to this dataset is more likely to 
             <summary>View Source</summary>
             <div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">MedVarSpherSampler</span><span class="p">(</span><span class="n">MedVarSampler</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A sampler based on MedVar but with a Spherical bias.</span>
+
 <span class="sd">    more documentation needed ...</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -2643,8 +2689,9 @@ more challenging datset. Hence any bias added to this dataset is more likely to 
 
         </details>
 
-            <div class="docstring"><p>A sampler based on MedVar but with a Spherical bias.
-more documentation needed ...</p>
+            <div class="docstring"><p>A sampler based on MedVar but with a Spherical bias.</p>
+
+<p>more documentation needed ...</p>
 </div>
 
 
@@ -2775,6 +2822,7 @@ more documentation needed ...</p>
             <summary>View Source</summary>
             <div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">MedVarColorSampler</span><span class="p">(</span><span class="n">MedVarSampler</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A sampler based on MedVar but with a Color bias.</span>
+
 <span class="sd">    more documentation needed ...</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -2788,6 +2836,7 @@ more documentation needed ...</p>
 
     <span class="k">def</span> <span class="nf">sample_obj_color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">SceneParameters</span><span class="p">,</span> <span class="n">intervention</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Samples the ``obj_color`` and ``obj_color_rgba``.</span>
+
 <span class="sd">        Attrs:</span>
 <span class="sd">            params: SceneParameters for which the obj_color is sampled and updated in place.</span>
 <span class="sd">            intervention: Flag whether interventional sampling is applied. Details: see class docu.</span>
@@ -2802,8 +2851,9 @@ more documentation needed ...</p>
 
         </details>
 
-            <div class="docstring"><p>A sampler based on MedVar but with a Color bias.
-more documentation needed ...</p>
+            <div class="docstring"><p>A sampler based on MedVar but with a Color bias.</p>
+
+<p>more documentation needed ...</p>
 </div>
 
 
@@ -2859,6 +2909,7 @@ more documentation needed ...</p>
             <summary>View Source</summary>
             <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">sample_obj_color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">SceneParameters</span><span class="p">,</span> <span class="n">intervention</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Samples the ``obj_color`` and ``obj_color_rgba``.</span>
+
 <span class="sd">        Attrs:</span>
 <span class="sd">            params: SceneParameters for which the obj_color is sampled and updated in place.</span>
 <span class="sd">            intervention: Flag whether interventional sampling is applied. Details: see class docu.</span>
@@ -2940,11 +2991,13 @@ more documentation needed ...</p>
             <summary>View Source</summary>
             <div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">MedVarSpherColorSampler</span><span class="p">(</span><span class="n">MedVarColorSampler</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A sampler based on MedVar but with a Spherical and a color bias.</span>
+
 <span class="sd">    more documentation needed ...</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">sample_spherical</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">SceneParameters</span><span class="p">,</span> <span class="n">intervention</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Samples the ``spherical``..</span>
+
 <span class="sd">        Attrs:</span>
 <span class="sd">            params: SceneParameters for which the spherical attribute is sampled and updated.</span>
 <span class="sd">            intervention: Flag whether interventional sampling is applied. Details: see class docu.</span>
@@ -2957,12 +3010,47 @@ more documentation needed ...</p>
         <span class="k">while</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">arm_position</span> <span class="o">&gt;</span> <span class="mf">0.55</span> <span class="ow">and</span> <span class="n">params</span><span class="o">.</span><span class="n">spherical</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">):</span>
             <span class="n">params</span><span class="o">.</span><span class="n">spherical</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sample</span><span class="p">(</span><span class="n">obj_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spherical</span><span class="p">)</span>
         <span class="n">params</span><span class="o">.</span><span class="n">mark_sampled</span><span class="p">(</span><span class="s1">&#39;spherical&#39;</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SceneParameters</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns a new SceneParameters with random values.</span>
+
+<span class="sd">        If you create your own biased sampled dataset by inheriting from this class,</span>
+<span class="sd">        you might want to change the order of how attributes are set.</span>
+<span class="sd">        For example, if you want that ``obj_rotation_pitch`` should depend on the</span>
+<span class="sd">        ``arm_position``then you should also sample the ``arm_position`` first.</span>
+<span class="sd">        However, it is highly recommended to sample the object name first, as</span>
+<span class="sd">        the sampling of the attribute might be dependent on the label</span>
+<span class="sd">        (see the explanation of distributions in class description)</span>
+
+<span class="sd">        Attrs:</span>
+<span class="sd">            obj_name: Overides the sampled obj_name with the given namen. Usally only useful for</span>
+<span class="sd">                manual sampling. Not recommeded when samplign larger sets.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="n">SceneParameters</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sample_obj_name</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="c1"># The name flag allows to overide the sampling result. The sampling is still executed to</span>
+        <span class="c1"># trigger any custom functionality that might be implented in subclasses.</span>
+        <span class="k">if</span> <span class="n">obj_name</span> <span class="ow">and</span> <span class="n">params</span><span class="o">.</span><span class="n">obj_name</span> <span class="o">!=</span> <span class="n">obj_name</span><span class="p">:</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">obj_name</span> <span class="o">=</span> <span class="n">obj_name</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sample_labeling_error</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sample_bending</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sample_rotation</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sample_fliplr</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sample_position</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sample_arm_position</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sample_spherical</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sample_color</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="n">params</span><span class="o">.</span><span class="n">check_values</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">params</span>
 </pre></div>
 
         </details>
 
-            <div class="docstring"><p>A sampler based on MedVar but with a Spherical and a color bias.
-more documentation needed ...</p>
+            <div class="docstring"><p>A sampler based on MedVar but with a Spherical and a color bias.</p>
+
+<p>more documentation needed ...</p>
 </div>
 
 
@@ -3009,6 +3097,7 @@ more documentation needed ...</p>
             <summary>View Source</summary>
             <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">sample_spherical</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">SceneParameters</span><span class="p">,</span> <span class="n">intervention</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Samples the ``spherical``..</span>
+
 <span class="sd">        Attrs:</span>
 <span class="sd">            params: SceneParameters for which the spherical attribute is sampled and updated.</span>
 <span class="sd">            intervention: Flag whether interventional sampling is applied. Details: see class docu.</span>
@@ -3032,6 +3121,75 @@ more documentation needed ...</p>
 <blockquote>
   <p>params: SceneParameters for which the spherical attribute is sampled and updated.
   intervention: Flag whether interventional sampling is applied. Details: see class docu.</p>
+</blockquote>
+</div>
+
+
+                            </div>
+                            <div id="MedVarSpherColorSampler.sample" class="classattr">
+                                        <div class="attr function"><a class="headerlink" href="#MedVarSpherColorSampler.sample">#&nbsp;&nbsp</a>
+
+        
+            <span class="def">def</span>
+            <span class="name">sample</span><span class="signature">(
+    self,
+    obj_name: Union[str, NoneType] = None
+) -&gt; <a href="scene_parameters.html#SceneParameters">two4two.scene_parameters.SceneParameters</a></span>:
+    </div>
+
+                <details>
+            <summary>View Source</summary>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SceneParameters</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns a new SceneParameters with random values.</span>
+
+<span class="sd">        If you create your own biased sampled dataset by inheriting from this class,</span>
+<span class="sd">        you might want to change the order of how attributes are set.</span>
+<span class="sd">        For example, if you want that ``obj_rotation_pitch`` should depend on the</span>
+<span class="sd">        ``arm_position``then you should also sample the ``arm_position`` first.</span>
+<span class="sd">        However, it is highly recommended to sample the object name first, as</span>
+<span class="sd">        the sampling of the attribute might be dependent on the label</span>
+<span class="sd">        (see the explanation of distributions in class description)</span>
+
+<span class="sd">        Attrs:</span>
+<span class="sd">            obj_name: Overides the sampled obj_name with the given namen. Usally only useful for</span>
+<span class="sd">                manual sampling. Not recommeded when samplign larger sets.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="n">SceneParameters</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sample_obj_name</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="c1"># The name flag allows to overide the sampling result. The sampling is still executed to</span>
+        <span class="c1"># trigger any custom functionality that might be implented in subclasses.</span>
+        <span class="k">if</span> <span class="n">obj_name</span> <span class="ow">and</span> <span class="n">params</span><span class="o">.</span><span class="n">obj_name</span> <span class="o">!=</span> <span class="n">obj_name</span><span class="p">:</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">obj_name</span> <span class="o">=</span> <span class="n">obj_name</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sample_labeling_error</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sample_bending</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sample_rotation</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sample_fliplr</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sample_position</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sample_arm_position</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sample_spherical</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sample_color</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="n">params</span><span class="o">.</span><span class="n">check_values</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">params</span>
+</pre></div>
+
+        </details>
+
+            <div class="docstring"><p>Returns a new SceneParameters with random values.</p>
+
+<p>If you create your own biased sampled dataset by inheriting from this class,
+you might want to change the order of how attributes are set.
+For example, if you want that <code><a href="#MedVarSpherColorSampler.obj_rotation_pitch">obj_rotation_pitch</a></code> should depend on the
+<code><a href="#MedVarSpherColorSampler.arm_position">arm_position</a></code>then you should also sample the <code><a href="#MedVarSpherColorSampler.arm_position">arm_position</a></code> first.
+However, it is highly recommended to sample the object name first, as
+the sampling of the attribute might be dependent on the label
+(see the explanation of distributions in class description)</p>
+
+<h6 id="attrs">Attrs</h6>
+
+<blockquote>
+  <p>obj_name: Overides the sampled obj_name with the given namen. Usally only useful for
+      manual sampling. Not recommeded when samplign larger sets.</p>
 </blockquote>
 </div>
 
@@ -3063,7 +3221,6 @@ more documentation needed ...</p>
                 <dd id="MedVarSpherColorSampler.obj_rotation_roll" class="variable"><a href="#Sampler.obj_rotation_roll">obj_rotation_roll</a></dd>
                 <dd id="MedVarSpherColorSampler.obj_rotation_pitch" class="variable"><a href="#Sampler.obj_rotation_pitch">obj_rotation_pitch</a></dd>
                 <dd id="MedVarSpherColorSampler.fliplr" class="variable"><a href="#Sampler.fliplr">fliplr</a></dd>
-                <dd id="MedVarSpherColorSampler.sample" class="function"><a href="#Sampler.sample">sample</a></dd>
                 <dd id="MedVarSpherColorSampler.sample_obj_name" class="function"><a href="#Sampler.sample_obj_name">sample_obj_name</a></dd>
                 <dd id="MedVarSpherColorSampler.sample_labeling_error" class="function"><a href="#Sampler.sample_labeling_error">sample_labeling_error</a></dd>
                 <dd id="MedVarSpherColorSampler.sample_bending" class="function"><a href="#Sampler.sample_bending">sample_bending</a></dd>
