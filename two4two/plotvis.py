@@ -38,7 +38,8 @@ def render_grid(
         max_number_samples = max(len(peaky_params), len(stretchy_params))
         num_rows = int(math.ceil(max_number_samples / num_cols_per_class))
 
-    num_cols = num_cols_per_class * 2 + 1 if label_class_axis else num_cols_per_class * 2
+    middle_column_offset = 1 if label_class_axis else 0
+    num_cols = num_cols_per_class * 2 + middle_column_offset
 
     fig, ax = plt.subplots(
         nrows=num_rows,
@@ -53,8 +54,9 @@ def render_grid(
         ax_title_stretchy.set_title('Stretchy', fontsize=20)
 
     peaky_ax = ax[:, :num_cols_per_class].flatten().tolist()[::-1]
+
     # middle_column = ax[:, num_cols_per_class].flatten().tolist()[::-1]
-    stretchy_ax = ax[:, num_cols_per_class + 1:].flatten().tolist()[::-1]
+    stretchy_ax = ax[:, num_cols_per_class + middle_column_offset:].flatten().tolist()[::-1]
 
     for (img, mask, param) in blender.render(
             params=peaky_params + stretchy_params,
