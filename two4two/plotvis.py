@@ -38,7 +38,7 @@ def render_grid(
         max_number_samples = max(len(peaky_params), len(stretchy_params))
         num_rows = int(math.ceil(max_number_samples / num_cols_per_class))
 
-    num_cols = num_cols_per_class * 2 + 1 if label_class_axis else 0
+    num_cols = num_cols_per_class * 2 + 1 if label_class_axis else num_cols_per_class * 2
 
     fig, ax = plt.subplots(
         nrows=num_rows,
